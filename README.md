@@ -1,3 +1,25 @@
+Robles Zambrano Sergio Michael 20400810
+Jiménez Larios Luis Mario 20400759
+Dominguez Herrera Denilson de Jesus 19400559
+
+Este proyecto es una Pokédex interactiva creada con React.js. Permite a los usuarios autenticarse 
+con una pantalla de login y luego acceder a una interfaz donde pueden ver tarjetas de Pokémon, 
+añadir o eliminar entradas. La aplicación utiliza estilos personalizados 
+y recursos multimedia como imágenes y música para una experiencia visual atractiva.
+
+Pasos para correr el proyecto de manera local
+Debes tener instalados en tu computadora:
+
+Node.js (v14 o superior recomendado)
+Un editor de código (como Visual Studio Code)
+
+Instrucciones para correr el proyecto
+Descarga y descomprime el proyecto
+Abrelo con tu editor de codigo de elección
+Instala las dependencias con "npm i"
+Usa el comando npm start para iniciar el proyecto
+Finalmente ve a la dirección del localhost en caso de que no se abra automaticamente en tu navegador 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Pokeball from "../img/Pokeball.gif"; // Adjust the path as necessary
 
 function Header({ onTypeSelect }) {
   const types = [
@@ -11,7 +12,7 @@ function Header({ onTypeSelect }) {
   return (
     <header>
       <div className="gif-container">
-        <img src="./img/Pokeball.gif" alt="Pokeball" className="pokeball-gif" />
+        <img src={Pokeball} alt="Pokeball" className="pokeball-gif" />
       </div>
       <nav className="nav">
         <ul className="nav-list">

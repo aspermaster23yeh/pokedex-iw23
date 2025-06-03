@@ -1,10 +1,32 @@
 import React, { useState } from "react";
+import rocketImage from "../img/rocket.png";
+import { motion, AnimatePresence } from "framer-motion";
 
-// Lista de tipos de Pokémon
 const types = [
   "normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison",
   "ground", "flying", "psychic", "bug", "rock", "ghost", "dark", "dragon", "steel", "fairy"
 ];
+
+const typeColors = {
+  fire: "bg-red-100",
+  water: "bg-blue-100",
+  grass: "bg-green-100",
+  electric: "bg-yellow-100",
+  ice: "bg-blue-200",
+  rock: "bg-yellow-200",
+  bug: "bg-green-200",
+  normal: "bg-gray-100",
+  psychic: "bg-pink-200",
+  fighting: "bg-red-300",
+  poison: "bg-purple-200",
+  ground: "bg-yellow-300",
+  flying: "bg-indigo-100",
+  ghost: "bg-indigo-200",
+  dark: "bg-gray-700 text-white",
+  dragon: "bg-purple-300",
+  steel: "bg-gray-300",
+  fairy: "bg-pink-100"
+};
 
 function downloadTextFile(filename, text) {
   const element = document.createElement("a");
@@ -21,6 +43,7 @@ const CrudPage = () => {
   const [type, setType] = useState(types[0]);
   const [cantidad, setCantidad] = useState(1);
   const [registros, setRegistros] = useState([]);
+  const [success, setSuccess] = useState(false);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -29,6 +52,8 @@ const CrudPage = () => {
     setPokemon("");
     setType(types[0]);
     setCantidad(1);
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 2000);
   };
 
   const handleDelete = (idx) => {
@@ -43,47 +68,47 @@ const CrudPage = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#D93E30",
-        padding: 32,
-        color: "white",
-        position: "relative",
-        overflow: "hidden"
-      }}
-    >
-      {/* Imagen de fondo */}
+    <div className="min-h-screen bg-gradient-to-br from-red-400 via-pink-500 to-red-600 text-white relative overflow-hidden p-8">
       <img
-        src={require('../img/rocket.png')}
+        src={rocketImage}
         alt="Rocket"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "400px",
-          height: "auto",
-          transform: "translate(-50%, -50%)",
-          opacity: 0.35,
-          zIndex: 0,
-          pointerEvents: "none",
-          userSelect: "none"
-        }}
+        className="absolute top-1/2 left-1/2 w-[400px] opacity-30 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
       />
-      <h2 style={{ position: "relative", zIndex: 1 }}>CRUD de Pokémon</h2>
-      <form onSubmit={handleAdd} style={{ marginBottom: 24, display: "flex", gap: 12, flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+      
+      <h2 className="text-4xl font-bold mb-8 relative z-10 drop-shadow-lg">CRUD de Pokémon</h2>
+
+      <AnimatePresence>
+        {success && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-green-500 text-white px-4 py-2 rounded shadow-md mb-4 w-fit relative z-10"
+          >
+            Pokémon registrado exitosamente
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.form
+        onSubmit={handleAdd}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col sm:flex-row flex-wrap gap-4 mb-6 bg-white bg-opacity-20 p-4 rounded-lg shadow-lg backdrop-blur-md relative z-10"
+      >
         <input
           type="text"
           placeholder="Nombre del Pokémon"
           value={pokemon}
           onChange={e => setPokemon(e.target.value)}
-          style={{ padding: 8, borderRadius: 4, border: "none", minWidth: 160 }}
+          className="px-4 py-2 rounded text-black flex-1 min-w-[160px]"
           required
         />
         <select
           value={type}
           onChange={e => setType(e.target.value)}
-          style={{ padding: 8, borderRadius: 4, border: "none" }}
+          className="px-4 py-2 rounded text-black"
         >
           {types.map(t => (
             <option key={t} value={t}>{t}</option>
@@ -94,88 +119,73 @@ const CrudPage = () => {
           min={1}
           value={cantidad}
           onChange={e => setCantidad(Number(e.target.value))}
-          style={{ padding: 8, borderRadius: 4, border: "none", width: 80 }}
+          className="px-4 py-2 rounded text-black w-20"
           required
         />
-        <button type="submit" style={{
-          padding: "8px 16px",
-          borderRadius: 4,
-          border: "none",
-          background: "#F5DB13",
-          color: "#212121",
-          fontWeight: "bold",
-          cursor: "pointer"
-        }}>
+        <button
+          type="submit"
+          className="bg-yellow-400 text-black font-bold px-4 py-2 rounded hover:bg-yellow-300 transition"
+        >
           Registrar
         </button>
-      </form>
+      </motion.form>
+
       <button
         onClick={handleDownload}
-        style={{
-          marginBottom: 16,
-          padding: "8px 16px",
-          borderRadius: 4,
-          border: "none",
-          background: "#F5DB13",
-          color: "#212121",
-          fontWeight: "bold",
-          cursor: "pointer",
-          position: "relative",
-          zIndex: 1
-        }}
+        className="mb-4 bg-yellow-400 text-black font-bold px-4 py-2 rounded hover:bg-yellow-300 relative z-10 disabled:opacity-50 transition"
         disabled={registros.length === 0}
       >
         Descargar archivo de texto
       </button>
-      <div style={{ width: "100%", borderRadius: 8, overflow: "hidden", position: "relative", zIndex: 1 }}>
-        <table style={{
-          width: "100%",
-          background: "rgba(255,255,255,0.65)",
-          color: "#212121",
-          borderRadius: 8,
-          backdropFilter: "blur(2px)"
-        }}>
-          <thead>
+
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="overflow-x-auto bg-white bg-opacity-60 backdrop-blur rounded-lg relative z-10 shadow-md"
+      >
+        <table className="w-full text-black text-sm">
+          <thead className="bg-white bg-opacity-60 text-black font-semibold">
             <tr>
-              <th style={{ padding: 8 }}>Pokémon</th>
-              <th style={{ padding: 8 }}>Tipo</th>
-              <th style={{ padding: 8 }}>Cantidad</th>
-              <th style={{ padding: 8 }}>Acciones</th>
+              <th className="p-2 text-left">Pokémon</th>
+              <th className="p-2 text-left">Tipo</th>
+              <th className="p-2 text-left">Cantidad</th>
+              <th className="p-2 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {registros.map((r, idx) => (
-              <tr key={idx}>
-                <td style={{ padding: 8 }}>{r.pokemon}</td>
-                <td style={{ padding: 8 }}>{r.type}</td>
-                <td style={{ padding: 8 }}>{r.cantidad}</td>
-                <td style={{ padding: 8 }}>
-                  <button
-                    onClick={() => handleDelete(idx)}
-                    style={{
-                      padding: "4px 10px",
-                      borderRadius: 4,
-                      border: "none",
-                      background: "#D93E30",
-                      color: "white",
-                      cursor: "pointer"
-                    }}
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {registros.length === 0 && (
+            {registros.length > 0 ? (
+              registros.map((r, idx) => (
+                <motion.tr
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  className={`transition duration-200 ease-in-out ${typeColors[r.type] || "bg-white bg-opacity-30"}`}
+                >
+                  <td className="p-2">{r.pokemon}</td>
+                  <td className="p-2 capitalize">{r.type}</td>
+                  <td className="p-2">{r.cantidad}</td>
+                  <td className="p-2">
+                    <button
+                      onClick={() => handleDelete(idx)}
+                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 flex items-center gap-1 transition"
+                    >
+                      🗑️ Eliminar
+                    </button>
+                  </td>
+                </motion.tr>
+              ))
+            ) : (
               <tr>
-                <td colSpan={4} style={{ textAlign: "center", padding: 16, color: "#D93E30" }}>
+                <td colSpan={4} className="p-4 text-center text-red-600 font-semibold">
                   No hay registros.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
-      </div>
+      </motion.div>
     </div>
   );
 };
