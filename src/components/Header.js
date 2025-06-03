@@ -8,6 +8,9 @@ function Header({ onTypeSelect }) {
 
   return (
     <header>
+      <div className="gif-container">
+        <img src="./img/Pokeball.gif" alt="Pokeball" className="pokeball-gif" />
+      </div>
       <nav className="nav">
         <ul className="nav-list">
           <li className="nav-item">

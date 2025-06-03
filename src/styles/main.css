@@ -365,3 +365,15 @@ main {
 .app-container.fairy {
     background-color: var(--type-fairy);
 }
+
+.gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem; /* Espacio entre el GIF y los botones */
+  }
+  
+  .pokeball-gif {
+    width: 30px; /* Ajusta el tamaño del GIF según sea necesario */
+    height: auto;
+  }
